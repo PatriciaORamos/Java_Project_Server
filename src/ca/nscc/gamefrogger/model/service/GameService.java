@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-import ca.nscc.gamefrogger.model.entity.Frogger;
 import ca.nscc.gamefrogger.model.entity.Player;
 import ca.nscc.gamefrogger.model.entity.Vehicle;
 import ca.nscc.gamefrogger.server.GameProperties;
@@ -112,24 +111,28 @@ public class GameService implements Runnable {
 		} else if(command.equals("MOVE_VEHICLE")) {
 
 			String image = in.next();
-			int velocity = in.nextInt();
 			boolean increase = in.nextBoolean();
 			int labelWidth = in.nextInt();
 			int vehicleX = in.nextInt();
 			int vehicleY = in.nextInt();
-			int frogX = in.nextInt();
-			int frogY = in.nextInt();
-			
-			Frogger frog = new Frogger(frogX, frogY);	
-			frog.getRectangle().setBounds(50, 50, frogX, frogY);
-			
-			Vehicle vehicleT = new Vehicle(image, velocity, increase, labelWidth, this);
+
+			Vehicle vehicleT = new Vehicle(image, increase, labelWidth);
 			vehicleT.setX(vehicleX);
 			vehicleT.setY(vehicleY);
-			vehicleT.getRectangle().setBounds(300,50, vehicleX, vehicleY);
-			vehicleT.setMyFrogger(frog);	
-			vehicleT.setMoving(true);
-			vehicleT.moveVehicle();			
+			vehicleT.getRectangle().setBounds(300, 50, vehicleX, vehicleY);
+			vehicleT.moveVehicle();		
+			
+		} else if(command.equals("STOP_CARS")) {
+			//Find thread of vehicle and stop
+			for (Thread t : Thread.getAllStackTraces().keySet()) {
+				if(t.getName().equals("vehicle")) {
+					t.stop();
+					s.close();
+				}
+			}			
+		} else if(command.equals("UPDATE_SCORE")) {
+			int id = in.nextInt();
+			int score = in.nextInt();
 		}
 	}
 

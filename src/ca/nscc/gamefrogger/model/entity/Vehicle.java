@@ -19,28 +19,24 @@ public class Vehicle extends Sprite implements Runnable {
 	
 	private Boolean moving, increase;
 	private Thread t;
-	private JLabel vehicleLabel;
 	private Frogger myFrogger;
-	private int velocity, labelWidth;
+	private int labelWidth;
 	private Socket s;	
 
 	public Boolean getMoving() { return moving; }
 	public Frogger getMyFrogger() {return myFrogger;}
 	
 	public void setMoving(Boolean moving) { this.moving = moving;}
-	public void setVelocity(int velocity) { this.velocity = velocity;}
 	public void setIncrease(Boolean increase) { this.increase = increase;}
-	public void setVehicleLabel(JLabel temp) { this.vehicleLabel = temp; }
 	public void setMyFrogger(Frogger temp) { this.myFrogger = temp; }
 	
 	public Vehicle() {		
 		this.moving = false;
 	}
 	
-	public Vehicle(String image, int velocity, Boolean increase, int labelWidth, GameService gameService ) {
+	public Vehicle(String image, Boolean increase, int labelWidth) {
 		super(300, 50, image);
-		this.moving = false;
-		this.velocity = velocity;
+		this.moving = true;
 		this.increase = increase;
 		this.labelWidth = labelWidth;
 		
@@ -65,13 +61,13 @@ public class Vehicle extends Sprite implements Runnable {
 			int ty = this.y;
 			
 			if(increase) { 
-				tx += 1 + velocity;
+				tx += 1 + 20;
 				
 				if ( tx > GameProperties.SCREEN_WIDTH ) {
 					tx = -1 * this.width;
 				}
 			} else {
-				tx -= 20 + velocity;
+				tx -= 20 + 20;
 				if (tx + labelWidth < 0) {
 					tx = GameProperties.SCREEN_WIDTH;
 				}				
