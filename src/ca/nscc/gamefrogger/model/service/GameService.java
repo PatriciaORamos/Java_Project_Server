@@ -132,7 +132,22 @@ public class GameService implements Runnable {
 			}			
 		} else if(command.equals("UPDATE_SCORE")) {
 			int id = in.nextInt();
-			int score = in.nextInt();
+			int count = in.nextInt();
+			int score = (count * 100 ) / 240;
+			
+			playerService.updateScore(score, id);
+			
+			Socket s = new Socket("localhost", CLIENT_PORT);			
+			OutputStream outstream = s.getOutputStream();
+			PrintWriter out = new PrintWriter(outstream);
+
+			String commandOut = "SCORE_PLAYER " + score + " " + id +"\n";
+			
+			System.out.println("Sending: " + commandOut);
+			out.println(commandOut);
+			out.flush();
+
+			s.close();			
 		}
 	}
 
